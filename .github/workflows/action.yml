@@ -1,0 +1,37 @@
+name: Generate SSH Key and Copy Public Key to Remote Server
+
+on: [push]
+
+jobs:
+  generate-and-copy-ssh-key:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Generate SSH key pair
+      run: |
+        ssh-keygen -t rsa -b 4096 -C "admin@gmail.com" -f $HOME/.ssh/id_rsa -N ""
+      id: ssh-key
+
+    - name: Copy SSH public key to remote server
+      run: |
+        ssh-copy-id -i $HOME/.ssh/id_rsa.pub root@172.31.46.191
+      env:
+        SSH_PRIVATE_KEY: $HOME/.ssh/id_rsa
+
+  use-ssh-key:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Use SSH key
+      run: |
+        # Add steps that use the SSH key, e.g., running SSH commands on the remote server
+        ssh -i $SSH_PRIVATE_KEY root@172.31.46.191 "echo 'SSH connection successful'"
+      env:
+        SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+
