@@ -17,7 +17,7 @@ jobs:
 
     - name: Copy SSH public key to remote server
       run: |
-        scp -r  $HOME/.ssh/id_rsa.pub ubuntu@52.71.33.91:/root/.ssh/authorized_keys
+        scp -r  $HOME/.ssh/id_rsa.pub ubuntu@172.31.40.212:/root/.ssh/authorized_keys
       env:
         SSH_PRIVATE_KEY: $HOME/.ssh/id_rsa
 
