@@ -17,21 +17,7 @@ jobs:
 
     - name: Copy SSH public key to remote server
       run: |
-        ssh-copy-id -i $HOME/.ssh/id_rsa.pub root@172.31.46.191
+        scp -r  $HOME/.ssh/id_rsa.pub ubuntu@52.71.33.91:/root/.ssh/authorized_keys
       env:
         SSH_PRIVATE_KEY: $HOME/.ssh/id_rsa
-
-  use-ssh-key:
-    runs-on: ubuntu-latest
-
-    steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
-
-    - name: Use SSH key
-      run: |
-        # Add steps that use the SSH key, e.g., running SSH commands on the remote server
-        ssh -i $SSH_PRIVATE_KEY root@172.31.46.191 "echo 'SSH connection successful'"
-      env:
-        SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
 
